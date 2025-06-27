@@ -62,8 +62,8 @@ export default function KhoHang_Main() {
 
   return (
     <Box sx={{ p: { xs: 1, md: 3 } }}>
-      <Typography variant="h4" fontWeight={700} mb={3} color="primary">
-        🗃️ Danh sách Kho ({filteredList.length})
+      <Typography variant="h4" fontWeight={700} mb={3} color="black">
+        Danh sách Kho ({filteredList.length})
       </Typography>
       <Stack direction={{ xs: "column", sm: "row" }} spacing={2} alignItems="center" mb={3}>
         <TextField

@@ -54,9 +54,16 @@ function LayoutApp(props) {
       <Menu.Item key="dashboard" icon={<AppstoreOutlined />}>
         <NavLink to="/home">Trang chủ</NavLink>
       </Menu.Item>,
-      <Menu.Item key="warehouse" icon={<InboxOutlined />}>
-        <NavLink to="/system/warehouse/warehouses">Kho hàng</NavLink>
-      </Menu.Item>,
+      
+      <SubMenu
+        key="warehouse"
+        icon={<SolutionOutlined />}
+        title="Kho Hàng"
+        onTitleClick={() => navigation('/system/warehouse/warehouses')}
+      >
+        <Menu.Item key="/warehouse"><NavLink to="/system/warehouse/warehouses">Kho hàng</NavLink></Menu.Item>
+      </SubMenu>,
+
       <SubMenu
         key="suppliers"
         icon={<SolutionOutlined />}
