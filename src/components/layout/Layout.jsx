@@ -54,8 +54,8 @@ function LayoutApp(props) {
       <Menu.Item key="dashboard" icon={<AppstoreOutlined />}>
         <NavLink to="/home">Trang chủ</NavLink>
       </Menu.Item>,
-      <Menu.Item key="warehouse" icon={<InboxOutlined />} disabled>
-        Kho hàng
+      <Menu.Item key="warehouse" icon={<InboxOutlined />}>
+        <NavLink to="/system/warehouse/warehouses">Kho hàng</NavLink>
       </Menu.Item>,
       <SubMenu
         key="suppliers"

@@ -61,8 +61,7 @@ const PaginationControl = ({
         pageSize={pageSize}
         total={total}
         onChange={onPageChange}
-        onShowSizeChange={onSizeChange}
-        showSizeChanger
+        
         pageSizeOptions={['20', '50', '100', '500', '1000']}
         showTotal={(total) => `Tổng ${total} dòng`}
         itemRender={itemRender}

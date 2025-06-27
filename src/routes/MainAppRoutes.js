@@ -40,6 +40,7 @@ const PotentialCustomer = lazy(() => import("../components/KhachHangTN/KHTN/KHTN
 
 // Import Administration component
 const Administration = lazy(() => import("../components/Administration/Administration.component"));
+const KhoHang = lazy(() => import("../components/KhoHang/View/KhoHang_Main"));
 
 function MainAppRoutes() {
   const navigate = useNavigate();
@@ -109,6 +110,7 @@ function MainAppRoutes() {
           {/* Route Products */}
           <Route path="/system/warehouse/product_type" element={<LoaiHang />} />
           <Route path="/system/warehouse/products" element={<HangHoa />} />
+          <Route path="/system/warehouse/warehouses" element={<KhoHang />} />
           <Route path="/system/warehouse/test_product_type" element={<ProductsDetail />} />
 
           {/* Route Stock In */}
