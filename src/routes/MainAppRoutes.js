@@ -41,6 +41,7 @@ const PotentialCustomer = lazy(() => import("../components/KhachHangTN/KHTN/KHTN
 // Import Administration component
 const Administration = lazy(() => import("../components/Administration/Administration.component"));
 const KhoHang = lazy(() => import("../components/KhoHang/View/KhoHang_Main"));
+const BaoCaoKhoHang = lazy(() => import("../components/BaoCaoKhoHang/Function/BaoCaoKhoHang_Main"));
 
 function MainAppRoutes() {
   const navigate = useNavigate();
@@ -141,6 +142,8 @@ function MainAppRoutes() {
           <Route path="/statistic" element={<LineChart />} />
           {/* Route Explain */}
           <Route path="/bao_gia" element={<Explain />} />
+          {/* Route Report Warehouse */}
+          <Route path="/system/warehouse/report_warehouse" element={<BaoCaoKhoHang />} />
           {/* Route 404 hoặc catch-all (tùy chọn) */}
           <Route path="*" element={<Home />} /> {/* Hoặc redirect đến trang 404 */}
         </Routes>

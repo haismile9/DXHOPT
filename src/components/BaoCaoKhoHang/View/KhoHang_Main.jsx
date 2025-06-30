@@ -16,8 +16,8 @@ import { Add as AddIcon, Edit as EditIcon, Delete as DeleteIcon, Search as Searc
 import KhoHang_Add from "../Function/BaoCaoKhoHang_Add";
 import KhoHang_Update from "../Function/BaoCaoKhoHang_Update";
 import KhoHang_Delete from "../Function/BaoCaoKhoHang_Delete";
-import KhoHang_Filter from "../Function/BaoCaoKhoHang_Filter";
-import { getWarehouses, getAccountList } from "../Function/khoHangApi";
+import KhoHang_Filter from "../Function/BaoCaoKhoHang_Main";
+import { getWarehouses, getAccountList } from "../Function/baoCaoKhoHangApi";
 import dayjs from "dayjs/esm/index.js";
 import Autocomplete from "@mui/material/Autocomplete";
 
