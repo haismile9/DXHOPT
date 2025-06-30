@@ -123,7 +123,7 @@ function LayoutApp(props) {
         <Menu.Item key="/order_detail_with_month"><NavLink to="/system/warehouse/order_detail_with_month">Thống kê hàng đặt theo tháng</NavLink></Menu.Item>
         <Menu.Item key="/order_detail_with_customer"><NavLink to="/system/warehouse/order_detail_with_customer">Thống kê hàng đặt theo khách hàng</NavLink></Menu.Item>
       </SubMenu>,
-      <Menu.Item key="/report_warehouse" icon={<BarChartOutlined />} disabled>
+      <Menu.Item key="/report_warehouse" icon={<BarChartOutlined />}>
         Báo cáo Kho Hàng
       </Menu.Item>,
       <SubMenu

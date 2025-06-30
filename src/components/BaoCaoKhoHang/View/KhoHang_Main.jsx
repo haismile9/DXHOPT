@@ -13,10 +13,10 @@ import {
   Dialog,
 } from "@mui/material";
 import { Add as AddIcon, Edit as EditIcon, Delete as DeleteIcon, Search as SearchIcon } from "@mui/icons-material";
-import KhoHang_Add from "../Function/KhoHang_Add";
-import KhoHang_Update from "../Function/KhoHang_Update";
-import KhoHang_Delete from "../Function/KhoHang_Delete";
-import KhoHang_Filter from "../Function/KhoHang_Filter";
+import KhoHang_Add from "../Function/BaoCaoKhoHang_Add";
+import KhoHang_Update from "../Function/BaoCaoKhoHang_Update";
+import KhoHang_Delete from "../Function/BaoCaoKhoHang_Delete";
+import KhoHang_Filter from "../Function/BaoCaoKhoHang_Filter";
 import { getWarehouses, getAccountList } from "../Function/khoHangApi";
 import dayjs from "dayjs/esm/index.js";
 import Autocomplete from "@mui/material/Autocomplete";
