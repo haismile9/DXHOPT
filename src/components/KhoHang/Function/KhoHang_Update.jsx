@@ -100,14 +100,27 @@ export default function KhoHang_Update({ data, onSuccess, onCancel }) {
       {/* Autocomplete cho Quản lý kho */}
       <Autocomplete
         options={accounts}
-        getOptionLabel={(option) => option.TenDayDu || ""}
-        value={accounts.find((acc) => acc.MaNguoiDung === form.quan_ly_kho) || null}
-        onChange={handleManagerChange}
+        getOptionLabel={(option) => option.ho_va_ten || option.TenDayDu || ""}
+        value={
+          accounts.find(
+            (acc) =>
+              acc.ma_nguoi_dung === form.quan_ly_kho ||
+              acc.MaNguoiDung === form.quan_ly_kho
+          ) || null
+        }
+        onChange={(event, value) => {
+          setForm((prev) => ({
+            ...prev,
+            quan_ly_kho: value ? value.ma_nguoi_dung || value.MaNguoiDung : "",
+            quan_ly_kho_name: value ? value.ho_va_ten || value.TenDayDu : "",
+          }));
+        }}
         renderInput={(params) => (
           <TextField {...params} label="Quản lý kho" fullWidth sx={{ my: 1 }} />
         )}
         isOptionEqualToValue={(option, value) =>
-          option.MaNguoiDung === value.MaNguoiDung
+          (option.ma_nguoi_dung || option.MaNguoiDung) ===
+          (value?.ma_nguoi_dung || value?.MaNguoiDung)
         }
       />
 

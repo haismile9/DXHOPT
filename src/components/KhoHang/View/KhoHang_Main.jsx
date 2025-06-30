@@ -17,7 +17,7 @@ import KhoHang_Add from "../Function/KhoHang_Add";
 import KhoHang_Update from "../Function/KhoHang_Update";
 import KhoHang_Delete from "../Function/KhoHang_Delete";
 import KhoHang_Filter from "../Function/KhoHang_Filter";
-import { getWarehouses, createWarehouse, updateWarehouse, deleteWarehouse } from "../Function/khoHangApi";
+import { getWarehouses, getAccountList } from "../Function/khoHangApi";
 
 
 export default function KhoHang_Main() {
@@ -27,9 +27,11 @@ export default function KhoHang_Main() {
   const [openUpdate, setOpenUpdate] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
   const [selected, setSelected] = useState(null);
+  const [accounts, setAccounts] = useState([]);
 
   useEffect(() => {
     fetchWarehouses();
+    fetchAccounts();
   }, []);
 
   const fetchWarehouses = async () => {
@@ -43,6 +45,10 @@ export default function KhoHang_Main() {
   setList(data);
 };
 
+const fetchAccounts = async () => {
+  const res = await getAccountList();
+  setAccounts(res.data?.data || []);
+};
 
   const handleFilter = (value) => setSearch(value);
 
@@ -151,15 +157,6 @@ export default function KhoHang_Main() {
                       >
                         Sửa
                       </Button>
-                      <Button
-                        size="small"
-                        variant="outlined"
-                        color="error"
-                        startIcon={<DeleteIcon />}
-                        onClick={() => handleDelete(kho)}
-                      >
-                        Xoá
-                      </Button>
                     </Stack>
                   </Stack>
                 </Stack>
@@ -180,6 +177,7 @@ export default function KhoHang_Main() {
       {/* Dialogs */}
       <Dialog open={openAdd} onClose={() => setOpenAdd(false)} maxWidth="sm" fullWidth>
         <KhoHang_Add
+          accounts={accounts}
           onSuccess={() => {
             setOpenAdd(false);
             fetchWarehouses();
@@ -190,6 +188,7 @@ export default function KhoHang_Main() {
       <Dialog open={openUpdate} onClose={() => setOpenUpdate(false)} maxWidth="sm" fullWidth>
         <KhoHang_Update
           data={selected}
+          accounts={accounts}
           onSuccess={() => {
             setOpenUpdate(false);
             fetchWarehouses();

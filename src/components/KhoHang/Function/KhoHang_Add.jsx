@@ -107,6 +107,8 @@ export default function KhoHang_Add({ onSuccess, onCancel }) {
     }
   };
 
+  console.log("form.quan_ly_kho:", form.quan_ly_kho, accounts);
+
   return (
     <Box p={3} component="form" onSubmit={handleSubmit}>
       <Typography variant="h6">Thêm kho mới</Typography>
@@ -164,16 +166,15 @@ export default function KhoHang_Add({ onSuccess, onCancel }) {
       {/* Autocomplete Quản lý kho */}
       <Autocomplete
         options={accounts}
-        getOptionLabel={(option) => option.TenDayDu || ""}
-        value={accounts.find(acc => acc.MaNguoiDung === form.quan_ly_kho) || null}
-        onChange={handleManagerChange}
-        renderInput={(params) => (
-          <TextField {...params} label="Quản lý kho" fullWidth sx={{ my: 1 }} />
-        )}
-        isOptionEqualToValue={(option, value) =>
-          option?.MaNguoiDung === value?.MaNguoiDung
-        }
-        loading={loading}
+        getOptionLabel={(option) => option.ho_va_ten}
+        value={accounts.find(acc => acc.ma_nguoi_dung === form.quan_ly_kho) || null}
+        onChange={(e, value) => {
+          setForm((prev) => ({
+            ...prev,
+            quan_ly_kho: value ? value.ma_nguoi_dung : "",
+          }));
+        }}
+        renderInput={(params) => <TextField {...params} label="Quản lý kho" variant="outlined" required />}
       />
 
       <TextField
