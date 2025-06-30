@@ -16,6 +16,7 @@ export default function KhoHang_Update({ data, onSuccess, onCancel }) {
   const [form, setForm] = useState(data || {});
   const [user, setUser] = useState({ ho_va_ten: "", ma_nguoi_dung: "" });
   const [accounts, setAccounts] = useState([]);
+  const [previewImg, setPreviewImg] = useState(data?.hinh_anh || "");
 
   useEffect(() => {
     setForm(data || {});
@@ -50,6 +51,18 @@ export default function KhoHang_Update({ data, onSuccess, onCancel }) {
 
   const handleSelectChange = (e) => {
     setForm((prev) => ({ ...prev, tinh_trang: e.target.value }));
+  };
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        setForm((prev) => ({ ...prev, hinh_anh: ev.target.result }));
+        setPreviewImg(ev.target.result);
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -138,6 +151,20 @@ export default function KhoHang_Update({ data, onSuccess, onCancel }) {
       <TextField name="tong_gia_tri_xuat" label="Tổng xuất" type="number" value={form.tong_gia_tri_xuat || 0} onChange={handleChange} fullWidth sx={{ my: 1 }} />
       <TextField name="tong_gia_tri_ton_kho" label="Tổng tồn kho" type="number" value={form.tong_gia_tri_ton_kho || 0} onChange={handleChange} fullWidth sx={{ my: 1 }} />
       <TextField name="ghi_chu" label="Ghi chú" value={form.ghi_chu || ""} onChange={handleChange} fullWidth sx={{ my: 1 }} />
+
+      {/* Ẩn phần chọn ảnh kho */}
+      {/* <Box mb={2}>
+        <img
+          src={previewImg || form.hinh_anh || "/warehouse-default.png"}
+          alt="Hình kho"
+          style={{ width: 120, height: 100, objectFit: "cover", borderRadius: 8, border: "1px solid #ccc" }}
+        />
+        <Button variant="outlined" component="label" sx={{ ml: 2 }}>
+          Chọn ảnh kho
+          <input type="file" accept="image/*" hidden onChange={handleImageChange} />
+        </Button>
+      </Box> */}
+
       <Box mt={2}>
         <Button variant="contained" type="submit">Lưu</Button>
         <Button variant="outlined" onClick={onCancel} sx={{ ml: 2 }}>Hủy</Button>

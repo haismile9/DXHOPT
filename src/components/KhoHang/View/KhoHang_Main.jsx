@@ -18,6 +18,7 @@ import KhoHang_Update from "../Function/KhoHang_Update";
 import KhoHang_Delete from "../Function/KhoHang_Delete";
 import KhoHang_Filter from "../Function/KhoHang_Filter";
 import { getWarehouses, getAccountList } from "../Function/khoHangApi";
+import dayjs from "dayjs/esm/index.js";
 
 
 export default function KhoHang_Main() {
@@ -100,7 +101,16 @@ const fetchAccounts = async () => {
             <Card elevation={3} sx={{ borderRadius: 3 }}>
               <CardContent>
                 <Stack direction="row" justifyContent="space-between" alignItems="flex-start">
-                  <Box>
+                  {/* Hình ảnh kho */}
+                  <Box mr={2}>
+                    <img
+                      src={kho.hinh_anh || "/warehouse-default.png"}
+                      alt="Hình kho"
+                      style={{ width: 120, height: 100, objectFit: "cover", borderRadius: 8, border: "1px solid #ccc" }}
+                    />
+                  </Box>
+                  {/* Thông tin kho */}
+                  <Box flex={1}>
                     <Typography variant="h6" fontWeight={600} gutterBottom>
                       {kho.ten_kho}
                     </Typography>
@@ -127,14 +137,15 @@ const fetchAccounts = async () => {
                       <b>Người tạo:</b> {kho.accounts_warehouse_nguoi_taoToaccounts?.ho_va_ten || kho.nguoi_tao}
                     </Typography>
                     <Typography variant="body2">
-                      <b>Ngày tạo:</b> {kho.ngay_tao && new Date(kho.ngay_tao).toLocaleDateString()}
+                      <b>Ngày tạo:</b>{" "}
+                      {kho.ngay_tao && dayjs(kho.ngay_tao).format("DD/MM/YYYY")}
                     </Typography>
                     <Typography variant="body2">
                       <b>Quản lý:</b> {kho.accounts_warehouse_quan_ly_khoToaccounts?.ho_va_ten || kho.quan_ly_kho}
                     </Typography>
                     <Typography variant="body2">
                       <b>Ngày kiểm kê gần nhất:</b>{" "}
-                      {kho.ngay_kiem_ke_gan_nhat && new Date(kho.ngay_kiem_ke_gan_nhat).toLocaleDateString()}
+                      {kho.ngay_kiem_ke_gan_nhat && dayjs(kho.ngay_kiem_ke_gan_nhat).format("DD/MM/YYYY")}
                     </Typography>
                   </Box>
                   <Stack spacing={1} alignItems="flex-end">

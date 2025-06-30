@@ -4,7 +4,7 @@ import {
   Box, Button, TextField, Typography, Select, MenuItem, FormControl, InputLabel
 } from "@mui/material";
 import Autocomplete from '@mui/material/Autocomplete';
-import dayjs from "dayjs";
+import dayjs from "dayjs/esm/index.js";
 
 const init = {
   ma_kho: "",
@@ -17,6 +17,7 @@ const init = {
   tong_gia_tri_xuat: 0,
   tong_gia_tri_ton_kho: 0,
   ghi_chu: "",
+  hinh_anh: "", // đường dẫn hoặc base64 ảnh
 };
 
 function getNextMaKho(list) {
@@ -32,6 +33,7 @@ export default function KhoHang_Add({ onSuccess, onCancel }) {
   const [loading, setLoading] = useState(false);
   const [user, setUser] = useState({ ho_va_ten: "", ma_nguoi_dung: "" });
   const [accounts, setAccounts] = useState([]);
+  const [previewImg, setPreviewImg] = useState("");
 
   useEffect(() => {
     const storedUser = JSON.parse(localStorage.getItem("userData") || "{}");
@@ -75,6 +77,18 @@ export default function KhoHang_Add({ onSuccess, onCancel }) {
     setForm((prev) => ({ ...prev, tinh_trang: e.target.value }));
   };
 
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        setForm((prev) => ({ ...prev, hinh_anh: ev.target.result }));
+        setPreviewImg(ev.target.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!form.ma_kho || !form.ten_kho.trim() || !form.vi_tri_kho.trim()) {
@@ -88,9 +102,9 @@ export default function KhoHang_Add({ onSuccess, onCancel }) {
     const body = {
       ...form,
       nguoi_tao: user.ma_nguoi_dung,
-      ngay_tao: dayjs().toISOString(),
+      ngay_tao: dayjs().format("DD/MM/YYYY"), // chuẩn Việt Nam
       ngay_kiem_ke_gan_nhat: form.ngay_kiem_ke_gan_nhat
-        ? dayjs(form.ngay_kiem_ke_gan_nhat).toISOString()
+        ? dayjs(form.ngay_kiem_ke_gan_nhat).format("DD/MM/YYYY")
         : undefined,
       tong_gia_tri_nhap: Number(form.tong_gia_tri_nhap) || 0,
       tong_gia_tri_xuat: Number(form.tong_gia_tri_xuat) || 0,
@@ -181,7 +195,11 @@ export default function KhoHang_Add({ onSuccess, onCancel }) {
         name="ngay_kiem_ke_gan_nhat"
         label="Ngày kiểm kê gần nhất"
         type="date"
-        value={form.ngay_kiem_ke_gan_nhat || ""}
+        value={
+          form.ngay_kiem_ke_gan_nhat
+            ? dayjs(form.ngay_kiem_ke_gan_nhat, ["YYYY-MM-DD", "DD/MM/YYYY"]).format("YYYY-MM-DD")
+            : ""
+        }
         onChange={handleChange}
         fullWidth
         sx={{ my: 1 }}
@@ -222,6 +240,20 @@ export default function KhoHang_Add({ onSuccess, onCancel }) {
         fullWidth
         sx={{ my: 1 }}
       />
+
+      {/* Ẩn phần chọn ảnh kho */}
+      {/* <Box mb={2}>
+        <img
+          src={previewImg || form.hinh_anh || "/warehouse-default.png"}
+          alt="Hình kho"
+          style={{ width: 120, height: 100, objectFit: "cover", borderRadius: 8, border: "1px solid #ccc" }}
+        />
+        <Button variant="outlined" component="label" sx={{ ml: 2 }}>
+          Chọn ảnh kho
+          <input type="file" accept="image/*" hidden onChange={handleImageChange} />
+        </Button>
+      </Box> */}
+
       <Box mt={2}>
         <Button variant="contained" type="submit" disabled={loading}>
           Thêm
