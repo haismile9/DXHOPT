@@ -19,7 +19,7 @@ import KhoHang_Delete from "../Function/KhoHang_Delete";
 import KhoHang_Filter from "../Function/KhoHang_Filter";
 import { getWarehouses, getAccountList } from "../Function/khoHangApi";
 import dayjs from "dayjs/esm/index.js";
-
+import Autocomplete from "@mui/material/Autocomplete";
 
 export default function KhoHang_Main() {
   const [list, setList] = useState([]);
@@ -29,6 +29,8 @@ export default function KhoHang_Main() {
   const [openDelete, setOpenDelete] = useState(false);
   const [selected, setSelected] = useState(null);
   const [accounts, setAccounts] = useState([]);
+  const [statusFilter, setStatusFilter] = useState("");
+  const [managerFilter, setManagerFilter] = useState("");
 
   useEffect(() => {
     fetchWarehouses();
@@ -65,7 +67,13 @@ const fetchAccounts = async () => {
 
   const filteredList = list.filter((kho) =>
     kho.ten_kho.toLowerCase().includes(search.toLowerCase())
-  );
+  ).filter(kho => {
+    if (statusFilter === "") return true;
+    return kho.tinh_trang === statusFilter;
+  }).filter(kho => {
+    if (managerFilter === "") return true;
+    return kho.accounts_warehouse_quan_ly_khoToaccounts?.ho_va_ten === managerFilter;
+  });
 
   return (
     <Box sx={{ p: { xs: 1, md: 3 } }}>
@@ -84,6 +92,17 @@ const fetchAccounts = async () => {
           }}
           sx={{ minWidth: 260, flex: 1 }}
         />
+        <Autocomplete
+          size="small"
+          options={accounts}
+          getOptionLabel={(option) => option.ho_va_ten || ""}
+          value={accounts.find(acc => acc.ho_va_ten === managerFilter) || null}
+          onChange={(_, value) => setManagerFilter(value ? value.ho_va_ten : "")}
+          renderInput={(params) => (
+            <TextField {...params} label="Người quản lý" sx={{ minWidth: 240 }} />
+          )}
+          isOptionEqualToValue={(option, value) => option.ho_va_ten === value?.ho_va_ten}
+        />
         <Button
           variant="contained"
           color="success"
@@ -93,6 +112,30 @@ const fetchAccounts = async () => {
         >
           Thêm Kho
         </Button>
+      </Stack>
+
+      <Stack direction="row" spacing={1} alignItems="center">
+        <Chip
+          label="Tất cả trạng thái"
+          clickable
+          color={statusFilter === "" ? "primary" : "default"}
+          onClick={() => setStatusFilter("")}
+          sx={{ fontWeight: 600 }}
+        />
+        <Chip
+          label="Đang hoạt động"
+          clickable
+          color={statusFilter === "Đang hoạt động" ? "success" : "default"}
+          onClick={() => setStatusFilter("Đang hoạt động")}
+          sx={{ fontWeight: 600 }}
+        />
+        <Chip
+          label="Bảo trì"
+          clickable
+          color={statusFilter === "Bảo trì" ? "warning" : "default"}
+          onClick={() => setStatusFilter("Bảo trì")}
+          sx={{ fontWeight: 600 }}
+        />
       </Stack>
 
       <Grid container spacing={3}>
@@ -124,14 +167,6 @@ const fetchAccounts = async () => {
                         size="small"
                         sx={{ fontWeight: 600 }}
                       />
-                      {kho.ghi_chu && (
-                        <Chip
-                          label={kho.ghi_chu}
-                          color="info"
-                          size="small"
-                          sx={{ fontWeight: 600 }}
-                        />
-                      )}
                     </Stack>
                     <Typography variant="body2">
                       <b>Người tạo:</b> {kho.accounts_warehouse_nguoi_taoToaccounts?.ho_va_ten || kho.nguoi_tao}
@@ -158,23 +193,28 @@ const fetchAccounts = async () => {
                     <Typography variant="body2">
                       <b>Tồn:</b> {kho.tong_gia_tri_ton_kho?.toLocaleString()} VNĐ
                     </Typography>
-                    <Stack direction="row" spacing={1} mt={2}>
-                      <Button
-                        size="small"
-                        variant="outlined"
-                        color="primary"
-                        startIcon={<EditIcon />}
-                        onClick={() => handleEdit(kho)}
-                      >
-                        Sửa
-                      </Button>
-                    </Stack>
+                    <Button
+                      size="small"
+                      variant="outlined"
+                      color="primary"
+                      startIcon={<EditIcon />}
+                      onClick={() => handleEdit(kho)}
+                    >
+                      Sửa
+                    </Button>
                   </Stack>
                 </Stack>
                 {kho.ghi_chu && (
                   <>
                     <Divider sx={{ my: 1 }} />
-                    <Typography variant="body2" color="text.secondary">
+                    <Typography
+                      variant="body2"
+                      color="text.secondary"
+                      sx={{
+                        whiteSpace: "normal", // Cho phép xuống dòng
+                        mt: 1,
+                      }}
+                    >
                       <b>Ghi chú:</b> {kho.ghi_chu}
                     </Typography>
                   </>
